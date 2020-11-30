@@ -1,6 +1,19 @@
 # AngularNewsRemake
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.1.
+This project focuses on the development of a news search application that allows users to search for news from different countries
+based on the [NewsAPI](https://newsapi.org/account).
+
+## Features Implemented
+* Users are able to save their API key at the Settings page.
+* Users are able to retrieve news from different countries.
+* Users are able to mark an article as 'Saved'.
+* Users are able to navigate to the official link to read more on the official news.
+* News will be fetched from NewsAPI if the articles collection in the DB is empty. Upon fetching, the data will be cached for 5 mins. After 5 mins has elapsed, articles will be deleted except for those with the isSaved flag set to true. A new call to the API endpoint will be initiated again to fetch new articles to populate the DB.
+
+## Technolgies Used
+* Angular
+* TypeScript
+* PrimeNg   
 
 ## Development server
 

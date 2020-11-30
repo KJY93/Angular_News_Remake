@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    height: 100%;
+}
+
+.container {
+    height: 100vh;
+}
+
+body {
+    font-family: 'Big Shoulders Inline Display', cursive, 'Sans-Serif';
+}
+
+html {
+    background-color: #ececec;
+}

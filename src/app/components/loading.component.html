@@ -1,0 +1,37 @@
+<div class="p-d-flex p-jc-center container">
+    <div class="p-d-flex p-flex-column p-jc-center">
+        <form [formGroup]="loginForm">    
+            <div style="text-align: center">
+                <h2>Please login using your News API key</h2>
+            </div>
+            
+            <div class="p-d-flex">
+                <div class="p-mr-2 p-input-filled">
+                    <div>
+                        <input type="text" pInputText placeholder="Enter your API Key..." formControlName="apiKey" [ngClass]="loginForm.get('apiKey').invalid && (loginForm.get('apiKey').dirty || loginForm.get('apiKey').touched)?'p-invalid':'p-valid'"/>
+                    </div>
+
+                    <div *ngIf="loginForm.get('apiKey').invalid && (loginForm.get('apiKey').dirty || loginForm.get('apiKey').touched)">
+                        <p *ngIf="loginForm.get('apiKey').errors.required" [ngClass]="{'p-invalid': loginForm.get('apiKey').errors.required}">API key is required.</p>
+                    </div>
+
+                    <div *ngIf="loginForm.get('apiKey').hasError('minlength')" [ngClass]="{'p-invalid': loginForm.get('apiKey').hasError('minlength')}">
+                        <p>
+                            API key must be 32 chars long.
+                        </p>
+                    </div>
+
+                    <div *ngIf="loginForm.get('apiKey').hasError('maxlength')" [ngClass]="{'p-invalid': loginForm.get('apiKey').hasError('maxlength')}">
+                        <p>
+                            API key must be 32 chars long.
+                        </p>
+                    </div>
+                </div>
+                <div class="p-mr-2"><button class="p-button-info" (click)="onLogin()" pButton type="button" label="Login" [disabled]="loginForm.invalid"></button></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+        

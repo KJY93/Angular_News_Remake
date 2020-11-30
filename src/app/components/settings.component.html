@@ -1,0 +1,45 @@
+<div class="p-d-flex p-jc-center container">
+    <div class="p-d-flex p-flex-column p-jc-center">
+        <div class="p-d-flex p-flex-column">
+            <div class="p-mb-2"><h1 class="headerText">Yet Another News App</h1></div>
+            <div class="p-mb-2"><h2 class="headerText">Settings</h2></div>
+            <div class="p-mb-2">NewsAPI.org</div>
+        </div>
+
+        <form [formGroup]="settingsForm">                
+            <div class="p-d-flex">
+                <div class="p-mr-2 p-input-filled">
+                    <div>
+                        <input type="text" pInputText placeholder="Enter your API Key..." formControlName="apiKeyValue" [ngClass]="settingsForm.get('apiKeyValue').invalid && (settingsForm.get('apiKeyValue').dirty || settingsForm.get('apiKeyValue').touched)?'p-invalid':'p-valid'"/>
+                    </div>
+
+                    <div *ngIf="settingsForm.get('apiKeyValue').invalid && (settingsForm.get('apiKeyValue').dirty || settingsForm.get('apiKeyValue').touched)">
+                        <p *ngIf="settingsForm.get('apiKeyValue').errors.required" [ngClass]="{'p-invalid': settingsForm.get('apiKeyValue').errors.required}">API key is required.</p>
+                    </div>
+
+                    <div *ngIf="settingsForm.get('apiKeyValue').hasError('minlength')" [ngClass]="{'p-invalid': settingsForm.get('apiKeyValue').hasError('minlength')}">
+                        <p>
+                            API key must be 32 chars long.
+                        </p>
+                    </div>
+
+                    <div *ngIf="settingsForm.get('apiKeyValue').hasError('maxlength')" [ngClass]="{'p-invalid': settingsForm.get('apiKeyValue').hasError('maxlength')}">
+                        <p>
+                            API key must be 32 chars long.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-d-flex" class="p-d-flex p-jc-between">
+                <div class="p-mr-2 p-mt-2"><button class="p-button-warning" (click)="onBack()" pButton type="button" label="Back"></button></div>
+                <div class="p-mr-2 p-mt-2"><button class="p-button-danger" (click)="onDelete()" pButton type="button" label="Delete" [disabled]="settingsForm.invalid"></button></div>
+                <div class="p-mr-2 p-mt-2"><button class="p-button-info" (click)="onSave()" pButton type="button" label="Save" [disabled]="settingsForm.invalid"></button></div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+        

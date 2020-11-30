@@ -1,0 +1,31 @@
+<div>
+    <div class="p-d-flex p-jc-between">
+        <div>
+            <h2>Yet Another News App</h2>
+        </div>
+        <div class="p-d-flex p-flex-column p-jc-center">        
+            <div>
+                <button pButton type="button" label="Settings" class="p-button-info" [routerLink]="['/settings']"></button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p-virtualScroller [value]="countries" scrollHeight="100vh" [itemSize]="150">
+            <p-header>
+                <h3>Countries</h3>
+            </p-header>
+
+            <ng-template pTemplate="item" let-country>
+                <div class="p-d-flex p-jc-between" [routerLink]="['/articles', country.countryCode, country.name]">
+                    <div>
+                        <h4>{{country.name}}</h4>
+                    </div>
+
+                    <div>
+                        <img src="{{country.countryFlagUrl}}">
+                    </div>
+                </div>
+            </ng-template>
+        </p-virtualScroller>
+    </div>
+</div>

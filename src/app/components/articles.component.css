@@ -1,0 +1,13 @@
+img {
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;   
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-right: 12px;
+}
+
+h2, h4 {
+    margin-top: 0;
+}
