@@ -75,8 +75,12 @@ export class NewsDatabase extends Dexie {
         return await this.articlesList.where('articleIndex').equals(artIndex).toArray();
     };
 
-    async markArticleAsSaved(id:number): Promise<any> {
-        return await this.articlesList.where('id').equals(id).modify({isSaved: true});
+    async markArticleAsSaved(id:number, isSaved: boolean): Promise<any> {
+        return await this.articlesList.where('id').equals(id).modify({isSaved: !isSaved});
+    }
+
+    async getSavedArticles(artIndex: string) {
+        return await this.articlesList.where('articleIndex').equals(artIndex).filter(c => c.isSaved === true).toArray();
     }
     // End of NewsAPI methods
 };

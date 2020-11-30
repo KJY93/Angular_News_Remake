@@ -16,6 +16,7 @@ export class ArticlesComponent implements OnInit {
   pageSize = 30;
   articlesList: Articles[];
   cname: string;
+  savedArticles: string[];
 
   constructor(private newsDB: NewsDatabase, private router: Router, private activatedRoute: ActivatedRoute, private apiSvc: ApiService) { }
 
@@ -77,7 +78,16 @@ export class ArticlesComponent implements OnInit {
               if (res > 0) {
                 console.info(`${res} articles with more than 5 mins and isSaved flag set to false are deleted.`);
 
-                // Go ahead and retrieve articles from API and update DB
+                // Get saved articles
+                this.newsDB.getSavedArticles(this.cc)
+                  .then(res => {
+                    this.savedArticles = res.map((data) => data.publishedAt)
+                    console.info('saved articles pk:', this.savedArticles)
+                  })
+                  .catch(err => console.error('Error: ', err))
+                //
+
+                // Go ahead and retrieve new articles from API and update DB
                 this.apiSvc.getArticlesFromNewsAPI(this.cc, this.apiKey, (this.pageSize).toString())
                   .then(results => {
                     this.articlesList = results['articles'].map((data): Articles => ({
@@ -93,13 +103,41 @@ export class ArticlesComponent implements OnInit {
                       cachedTime: (new Date().getTime()) / 1000,
                       isSaved: false, 
                     }))
+
+                    console.info('before saved:', this.articlesList)
+
+                    // Filter article lists
+                    if (this.savedArticles.length > 0) {
+                      let count = 0;
+                      let newArticles = [];
+                      
+                      for (let i = 0; i < this.articlesList.length; i++) {
+                        for (let j = 0; j < this.savedArticles.length; j++) {
+                          console.info('published at artlist', this.articlesList[i]['publishedAt'])
+                          console.info('published at saved',this.savedArticles[j])
+                          console.info(this.articlesList[i]['publishedAt'] === this.savedArticles[j])
+                          if (this.articlesList[i]['publishedAt'] === this.savedArticles[j]) {
+                            count += 1;
+                          }
+                        }
+                        if (count === 0) {
+                          console.info('added stuff', this.articlesList[i])
+                          newArticles.push(this.articlesList[i]); 
+                        }
+                        // Reinitialize count 
+                        count = 0;
+                      }
+                      this.articlesList = newArticles;
+                    }
+                    //
+
                     console.info(`>>> Cached time exceeded, saving new ${this.cc} articles to DB: `, this.articlesList);
 
                     this.newsDB.saveArticles(this.articlesList);
-                    console.log(`>>> DB saved articles merged with updated with newly fetched ${this.cc} articles`);
+                    console.log(`>>> DB saved articles merged with newly fetched ${this.cc} articles`);
 
                     // Update articlesList with id
-                    console.info('>>> Updating article list with id')
+                    console.info('>>> Updating article list with id');
                     this.newsDB.getArticlesBasedOnCountryCode(this.cc)
                       .then(res => {
                         this.articlesList = res;
@@ -125,7 +163,7 @@ export class ArticlesComponent implements OnInit {
       .catch(err => console.error(err))
   }
 
-  async onSaveArticle(id: string) {
-      console.info(await this.newsDB.markArticleAsSaved(+id));
+  async onSaveArticle(id: string, isSaved: boolean) {
+      await this.newsDB.markArticleAsSaved(+id, isSaved);
   }
 }

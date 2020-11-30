@@ -44,8 +44,8 @@ export class SettingsComponent implements OnInit {
     console.info('>>> Saving API key to DB')  
     await this.newsDB.saveApiKey(apiKeyObj) // this returns a promise
       .then(res => {
-        console.info('Successfully added API key to DB.', res);
-        localStorage.setItem('token', res);
+        console.info('Successfully added API key to DB.');
+        localStorage.setItem('token', apiKeyValue);
       })
       .catch((err) => {
         console.error(`${err.name}: ${err.message}`)}
